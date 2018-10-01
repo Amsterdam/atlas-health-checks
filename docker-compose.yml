@@ -1,0 +1,9 @@
+version: '3.5'
+services:
+  health-check:
+    build:
+      context: .
+    environment:
+    - API_ROOT=https://acc.api.data.amsterdam.nl
+    - USERNAME_EMPLOYEE_PLUS
+    - PASSWORD_EMPLOYEE_PLUS

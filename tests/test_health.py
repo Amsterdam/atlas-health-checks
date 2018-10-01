@@ -23,8 +23,8 @@ SCOPES = [
 def setup_module():
     """ setup any state specific to the execution of the given module."""
     global auth_headers
-    user = os.getenv('HEALTH_CHECK_USER', 'signals.admin@amsterdam.nl')
-    password = os.getenv('HEALTH_CHECK_PASSWORD', 'insecure')
+    user = os.getenv('USERNAME_EMPLOYEE_PLUS')
+    password = os.getenv('PASSWORD_EMPLOYEE_PLUS')
     auth_headers = GetAccessToken().getAccessToken(user, password, SCOPES, ACCEPTANCE)
 
 
