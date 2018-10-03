@@ -16,7 +16,6 @@ def tryStep(String message, Closure block, Closure tearDown = null) {
     }
 }
 
-
 node {
     stage("Checkout") {
         checkout scm
@@ -33,7 +32,9 @@ node {
         tryStep "Test", {
             def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
             image.pull()
-            image.run()
+            image.withRun(c ->
+              pytest
+            )
         }
     }
 }
