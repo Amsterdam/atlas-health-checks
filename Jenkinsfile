@@ -29,11 +29,21 @@ node {
     }
 
     stage("Test") {
-        tryStep "Test", {
-            def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
-            image.pull()
-            image.inside{c ->
-                sh 'pytest'
+        tryStep "test", {
+            withEnv([
+                    'USERNAME_EMPLOYEE_PLUS=atlas.employee.plus@amsterdam.nl',
+                    'API_ROOT=https://acc.api.data.amsterdam.nl'
+            ]) {
+                withCredentials([string(credentialsId: 'PASSWORD_EMPLOYEE_PLUS', variable: 'PASSWORD_EMPLOYEE_PLUS')]) {
+                    if (!PASSWORD_EMPLOYEE_PLUS?.trim()) {
+                        error("PASSWORD_EMPLOYEE_PLUS missing")
+                    }
+                    def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
+                    image.pull()
+                    image.inside { c ->
+                        sh 'pytest'
+                    }
+                }
             }
         }
     }
@@ -44,7 +54,7 @@ String BRANCH = "${env.BRANCH_NAME}"
 if (BRANCH == "master") {
     node {
         stage('Push image') {
-            tryStep "image tagging", {
+            tryStep "tag & push image", {
                 def api = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
                 api.pull()
                 api.push("latest")

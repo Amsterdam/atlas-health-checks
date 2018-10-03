@@ -27,6 +27,10 @@ def setup_module():
     global auth_headers
     user = os.getenv('USERNAME_EMPLOYEE_PLUS')
     password = os.getenv('PASSWORD_EMPLOYEE_PLUS')
+
+    if not password:
+        raise Exception('PASSWORD_EMPLOYEE_PLUS not provided!')
+
     auth_headers = GetAccessToken().getAccessToken(user, password, SCOPES, AUTH_ACCEPTANCE)
 
 
