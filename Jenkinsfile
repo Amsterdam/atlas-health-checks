@@ -29,6 +29,10 @@ node {
     }
 
     stage("Test") {
+        environment {
+            USERNAME_EMPLOYEE_PLUS = 'atlas.employee.plus@amsterdam.nl'
+            PASSWORD_EMPLOYEE_PLUS = credentials('PASSWORD_EMPLOYEE_PLUS')
+        }
         tryStep "Test", {
             def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
             image.pull()
