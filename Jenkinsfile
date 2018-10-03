@@ -36,6 +36,7 @@ node {
         tryStep "Test", {
             def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
             image.pull()
+            sh 'echo $USERNAME_EMPLOYEE_PLUS'
             image.inside{c ->
                 sh 'echo $USERNAME_EMPLOYEE_PLUS'
                 sh 'pytest'
