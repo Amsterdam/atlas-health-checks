@@ -5,6 +5,8 @@ import random
 import string
 from urllib.parse import urlparse, parse_qsl
 
+
+# Based on signal project authentication: https://github.com/Amsterdam/signals/blob/master/utils/get_signals.py
 class GetAccessToken(object):
     """
         Get a header authentication item for access token
@@ -62,18 +64,4 @@ class GetAccessToken(object):
         parsed = urlparse(returnedUrl)
         fragment = parse_qsl(parsed.fragment)
         access_token = fragment[0][1]
-        os.environ["ACCESS_TOKEN"] = access_token
         return {"Authorization": 'Bearer ' + access_token}
-
-
-if __name__ == "__main__":
-    acceptance = True
-    email = os.getenv('HEALTH_CHECK_USER', 'signals.admin@amsterdam.nl')
-    password = os.getenv('HEALTH_CHECK_PASSWORD', 'insecure')
-    access_token = GetAccessToken().getAccessToken(email, password, [], acceptance)
-    print(f'Received new Access Token Header: {access_token}')
-    # url = "https://acc.api.data.amsterdam.nl/signals/auth/signal"
-    url = "https://acc.api.data.amsterdam.nl/grondexploitatie/stadsdeel/A/"  # Auth required
-    response = requests.get(url, headers=access_token)
-    jsonresponse = response.json()
-    print(jsonresponse)

@@ -4,8 +4,11 @@ import requests
 
 from tests.get_access_token import GetAccessToken
 
-API_ROOT = "https://acc.api.data.amsterdam.nl"
-ACCEPTANCE = True
+# Health check API calls domain:
+API_ROOT = os.getenv('API_ROOT', "https://acc.api.data.amsterdam.nl")
+
+# Authentication flow domain, True => acceptance, False => production
+AUTH_ACCEPTANCE = os.getenv('AUTH_ACCEPTANCE', True)
 
 SCOPES = [
     "BRK/RS",
@@ -21,11 +24,10 @@ SCOPES = [
 
 
 def setup_module():
-    """ setup any state specific to the execution of the given module."""
     global auth_headers
     user = os.getenv('USERNAME_EMPLOYEE_PLUS')
     password = os.getenv('PASSWORD_EMPLOYEE_PLUS')
-    auth_headers = GetAccessToken().getAccessToken(user, password, SCOPES, ACCEPTANCE)
+    auth_headers = GetAccessToken().getAccessToken(user, password, SCOPES, AUTH_ACCEPTANCE)
 
 
 def check_api_call(uri, do_authenticate=False):
@@ -35,7 +37,8 @@ def check_api_call(uri, do_authenticate=False):
         response = requests.get(url, headers=auth_headers)
     else:
         response = requests.get(url)
-    assert response.ok == True
+    assert response.status_code == 200
+    assert response.ok
 
 
 def test_dcat():

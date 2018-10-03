@@ -12,6 +12,7 @@ pip install -r requirements.txt
 
 The following environment variables should be set:
 ```
+API_ROOT
 USERNAME_EMPLOYEE_PLUS
 PASSWORD_EMPLOYEE_PLUS
 ```
