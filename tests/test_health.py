@@ -28,6 +28,8 @@ def setup_module():
     user = os.getenv('USERNAME_EMPLOYEE_PLUS')
     password = os.getenv('PASSWORD_EMPLOYEE_PLUS')
 
+    if not user:
+        raise Exception('USERNAME_EMPLOYEE_PLUS not provided!')
     if not password:
         raise Exception('PASSWORD_EMPLOYEE_PLUS not provided!')
 
