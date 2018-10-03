@@ -32,9 +32,9 @@ node {
         tryStep "Test", {
             def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
             image.pull()
-            image.withRun(c ->
-              pytest
-            )
+            image.withRun{c ->
+                sh 'pytest'
+            }
         }
     }
 }
