@@ -3,6 +3,7 @@
 Collection of tests that validate APIs are healthy.
 Anonymous and authenticated requests are send to end points used by Atlas (City Data) project.
 
+
 ## Install
 ```
 pip install -r requirements.txt
