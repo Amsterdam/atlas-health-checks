@@ -1,5 +1,5 @@
 FROM python:3.7.0
-MAINTAINER datapunt.ois@amsterdam.nl
+LABEL maintainer="datapunt@amsterdam.nl"
 
 WORKDIR /home
 COPY requirements.txt .

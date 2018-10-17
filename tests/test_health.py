@@ -116,3 +116,8 @@ def test_brk():
 def test_wkpb():
     check_api_call("/wkpb/brondocument/?beperking=3488")
     check_api_call("/wkpb/beperking/3488/")
+
+def test_meetbouten():
+    check_api_call("/meetbouten/meetbout")
+    check_api_call("/meetbouten/meetbout/10581111/")
+    check_api_call("/meetbouten/rollaag/1/")
