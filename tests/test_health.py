@@ -53,7 +53,7 @@ def test_dcat():
 
 def test_panorama():
     check_api_call("/dcatd/openapi")
-    check_api_call("/panorama/recente_opnames/alle/TMX7316010203-000719_pano_0000_000950/")
+    check_api_call("/panorama/panoramas/TMX7316010203-000719_pano_0000_000950/adjacencies/?newest_in_range=true")
     check_api_call("/panorama/thumbnail/?lat=52.375764&lon=4.8914344&width=438&radius=180")
     check_api_call("/panorama/thumbnail/?lat=52.375764&lon=4.8914344&width=240&radius=50")
     check_api_call("/panorama/thumbnail/TMX7316010203-000227_pano_0000_001568/?width=240&heading=156")
