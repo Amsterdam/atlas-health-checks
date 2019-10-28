@@ -23,23 +23,27 @@ node {
 
     stage("Build docker") {
         tryStep "build", {
-            def api = docker.build("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}", ".")
+            def api = docker.build("repo.data.amsterdam.nl/datapunt/atlas-health-checks:${env.BUILD_NUMBER}", ".")
             api.push()
         }
     }
 
     stage("Test") {
-        environment {
-            USERNAME_EMPLOYEE_PLUS = 'atlas.employee.plus@amsterdam.nl'
-            PASSWORD_EMPLOYEE_PLUS = credentials('PASSWORD_EMPLOYEE_PLUS')
-        }
-        tryStep "Test", {
-            def image = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
-            image.pull()
-            sh 'echo $USERNAME_EMPLOYEE_PLUS'
-            image.inside{c ->
-                sh 'echo $USERNAME_EMPLOYEE_PLUS'
-                sh 'pytest'
+        tryStep "test", {
+            withEnv([
+                    'USERNAME_EMPLOYEE_PLUS=atlas.employee.plus@amsterdam.nl',
+                    'API_ROOT=https://acc.api.data.amsterdam.nl'
+            ]) {
+                withCredentials([string(credentialsId: 'PASSWORD_EMPLOYEE_PLUS', variable: 'PASSWORD_EMPLOYEE_PLUS')]) {
+                    if (!PASSWORD_EMPLOYEE_PLUS?.trim()) {
+                        error("PASSWORD_EMPLOYEE_PLUS missing")
+                    }
+                    def image = docker.image("repo.data.amsterdam.nl/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
+                    image.pull()
+                    image.inside { c ->
+                        sh 'pytest'
+                    }
+                }
             }
         }
     }
@@ -50,8 +54,8 @@ String BRANCH = "${env.BRANCH_NAME}"
 if (BRANCH == "master") {
     node {
         stage('Push image') {
-            tryStep "image tagging", {
-                def api = docker.image("build.datapunt.amsterdam.nl:5000/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
+            tryStep "tag & push image", {
+                def api = docker.image("repo.data.amsterdam.nl/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
                 api.pull()
                 api.push("latest")
             }

@@ -27,6 +27,12 @@ def setup_module():
     global auth_headers
     user = os.getenv('USERNAME_EMPLOYEE_PLUS')
     password = os.getenv('PASSWORD_EMPLOYEE_PLUS')
+
+    if not user:
+        raise Exception('USERNAME_EMPLOYEE_PLUS not provided!')
+    if not password:
+        raise Exception('PASSWORD_EMPLOYEE_PLUS not provided!')
+
     auth_headers = GetAccessToken().getAccessToken(user, password, SCOPES, AUTH_ACCEPTANCE)
 
 
@@ -47,7 +53,7 @@ def test_dcat():
 
 def test_panorama():
     check_api_call("/dcatd/openapi")
-    check_api_call("/panorama/recente_opnames/alle/TMX7316010203-000719_pano_0000_000950/")
+    check_api_call("/panorama/panoramas/TMX7316010203-000719_pano_0000_000950/adjacencies/?newest_in_range=true")
     check_api_call("/panorama/thumbnail/?lat=52.375764&lon=4.8914344&width=438&radius=180")
     check_api_call("/panorama/thumbnail/?lat=52.375764&lon=4.8914344&width=240&radius=50")
     check_api_call("/panorama/thumbnail/TMX7316010203-000227_pano_0000_001568/?width=240&heading=156")
@@ -110,3 +116,8 @@ def test_brk():
 def test_wkpb():
     check_api_call("/wkpb/brondocument/?beperking=3488")
     check_api_call("/wkpb/beperking/3488/")
+
+def test_meetbouten():
+    check_api_call("/meetbouten/meetbout")
+    check_api_call("/meetbouten/meetbout/10581111/")
+    check_api_call("/meetbouten/rollaag/1/")
