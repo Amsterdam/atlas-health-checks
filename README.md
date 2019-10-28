@@ -1,7 +1,7 @@
 # Atlas health checks
 
 Collection of tests that validate APIs are healthy.
-Anonymous and authenticated requests are send to end points used by Atlas (City Data) project.
+Anonymous and authenticated requests are send to end points used by Atlas (Data en informatie) project.
 
 
 ## Install
