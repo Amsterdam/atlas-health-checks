@@ -78,10 +78,6 @@ def test_geosearch():
     check_api_call("/geosearch/biz/?lat=52.375764&lon=4.8914344")
 
 
-def test_grondexploitatie():
-    check_api_call("/grondexploitatie/stadsdeel/A/", True)
-
-
 def test_bag():
     check_api_call("/bag/nummeraanduiding/?pand=0363100012180422")
     check_api_call("/bag/pand/0363100012180422/")
