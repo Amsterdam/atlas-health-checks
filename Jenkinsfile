@@ -23,7 +23,7 @@ node {
 
     stage("Build docker") {
         tryStep "build", {
-            def api = docker.build("repo.data.amsterdam.nl/datapunt/atlas-health-checks:${env.BUILD_NUMBER}", ".")
+            def api = docker.build("docker-registry.data.amsterdam.nl/datapunt/atlas-health-checks:${env.BUILD_NUMBER}", ".")
             api.push()
         }
     }
@@ -38,7 +38,7 @@ node {
                     if (!PASSWORD_EMPLOYEE_PLUS?.trim()) {
                         error("PASSWORD_EMPLOYEE_PLUS missing")
                     }
-                    def image = docker.image("repo.data.amsterdam.nl/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
+                    def image = docker.image("docker-registry.data.amsterdam.nl/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
                     image.pull()
                     image.inside { c ->
                         sh 'pytest'
@@ -55,7 +55,7 @@ if (BRANCH == "master") {
     node {
         stage('Push image') {
             tryStep "tag & push image", {
-                def api = docker.image("repo.data.amsterdam.nl/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
+                def api = docker.image("docker-registry.data.amsterdam.nl/datapunt/atlas-health-checks:${env.BUILD_NUMBER}")
                 api.pull()
                 api.push("latest")
             }
