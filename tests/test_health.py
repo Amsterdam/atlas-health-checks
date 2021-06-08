@@ -1,4 +1,4 @@
-# utf-8
+1# utf-8
 import os
 import requests
 
@@ -75,7 +75,6 @@ def test_geosearch():
     check_api_call("/geosearch/munitie/?lat=52.375764&lon=4.8914344")
     check_api_call("/geosearch/bominslag/?lat=52.375764&lon=4.8914344&radius=25")
     check_api_call("/geosearch/monumenten/?lat=52.375764&lon=4.8914344&monumenttype=isnot_pand_bouwblok&radius=25")
-    check_api_call("/geosearch/grondexploitatie/?lat=52.375764&lon=4.8914344")
     check_api_call("/geosearch/biz/?lat=52.375764&lon=4.8914344")
 
 
